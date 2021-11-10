@@ -9,7 +9,7 @@ import (
 var pg *Postgres
 
 func init() {
-	pg = NewPostgres("postgresql://admin:123456@10.78.115.187:5432/mock", true)
+	pg = NewPostgres("postgresql://admin:123456@127.0.0.1:5432/mock", true)
 }
 
 func TestAutoMigrate(t *testing.T) {
