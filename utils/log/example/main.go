@@ -1,7 +1,7 @@
 package main
 
 import (
-	"codeup.aliyun.com/atali/pkg/utils/log"
+	"github.com/nooocode/pkg/utils/log"
 
 	"github.com/sirupsen/logrus"
 )

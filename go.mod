@@ -1,4 +1,4 @@
-module codeup.aliyun.com/atali/pkg
+module github.com/nooocode/pkg
 
 go 1.16
 
