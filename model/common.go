@@ -89,9 +89,7 @@ type EnableRequest struct {
 }
 
 const (
-	Success = 0
-	// 取消订单成功
-	CancelSuccess             = 20001
+	Success                   = 20000
 	InternalServerError       = 50000
 	BadRequest                = 40000
 	Unauthorized              = 40001
