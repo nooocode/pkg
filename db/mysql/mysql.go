@@ -201,7 +201,7 @@ func (m *Mysql) UpdateWithCheckDuplication(info, query interface{}, args ...inte
 	if count > 0 {
 		return true, nil
 	}
-	err = m.DB().Save(info).Error
+	err = m.DB().Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
 	return false, err
 }
 
@@ -214,7 +214,7 @@ func (m *Mysql) UpdateWithCheckDuplication2(db *gorm.DB, info, query interface{}
 	if count > 0 {
 		return true, nil
 	}
-	err = db.Save(info).Error
+	err = db.Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
 	return false, err
 }
 
@@ -227,7 +227,7 @@ func (m *Mysql) UpdateWithCheckDuplicationAndOmit(info interface{}, omit []strin
 	if count > 0 {
 		return true, nil
 	}
-	err = m.DB().Omit(omit...).Save(info).Error
+	err = m.DB().Session(&gorm.Session{FullSaveAssociations: true}).Omit(omit...).Save(info).Error
 	return false, err
 }
 
@@ -240,7 +240,7 @@ func (m *Mysql) UpdateWithCheckDuplicationByTableName(tableName string, info, qu
 	if count > 0 {
 		return true, nil
 	}
-	err = m.DB().Save(info).Error
+	err = m.DB().Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
 	return false, err
 }
 
