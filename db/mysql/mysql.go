@@ -231,6 +231,19 @@ func (m *Mysql) UpdateWithCheckDuplicationAndOmit(info interface{}, omit []strin
 	return false, err
 }
 
+func (m *Mysql) UpdateWithCheckDuplicationAndOmit2(db *gorm.DB, info interface{}, omit []string, query interface{}, args ...interface{}) (bool, error) {
+	var count int64
+	err := db.Model(info).Where(query, args...).Count(&count).Error
+	if err != nil {
+		return true, err
+	}
+	if count > 0 {
+		return true, nil
+	}
+	err = db.Session(&gorm.Session{FullSaveAssociations: true}).Omit(omit...).Save(info).Error
+	return false, err
+}
+
 func (m *Mysql) UpdateWithCheckDuplicationByTableName(tableName string, info, query interface{}, args ...interface{}) (bool, error) {
 	var count int64
 	err := m.DB().Table(tableName).Where(query, args...).Count(&count).Error
