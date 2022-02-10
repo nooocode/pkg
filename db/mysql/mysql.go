@@ -104,6 +104,7 @@ func (m *Mysql) PageQueryWithPreload(db *gorm.DB, pageSize, pageIndex int64, ord
 	for _, s := range preload {
 		db = db.Preload(s)
 	}
+	db = db.Order(order)
 	db = db.Find(result)
 
 	if errors.Is(db.Error, gorm.ErrRecordNotFound) {
