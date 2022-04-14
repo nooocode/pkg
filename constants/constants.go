@@ -7,6 +7,8 @@ var (
 	PlatformTenantID = ""
 	//是否启用租户
 	EnabelTenant = false
+	//默认用户角色
+	DefaultRoleID = ""
 )
 
 func SetSuperAdminRoleID(roleID string) {
@@ -19,4 +21,7 @@ func SetPlatformTenantID(tenantID string) {
 
 func SetEnabelTenant(enabelTenant bool) {
 	EnabelTenant = enabelTenant
+}
+func SetDefaultRoleID(roleID string) {
+	DefaultRoleID = roleID
 }
