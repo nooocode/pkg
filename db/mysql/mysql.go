@@ -180,6 +180,20 @@ func (m *Mysql) CreateWithCheckDuplication(info, query interface{}, args ...inte
 	return false, err
 }
 
+func (m *Mysql) CreateWithCheckDuplicationWithDB(db *gorm.DB, info, query interface{}, args ...interface{}) (bool, error) {
+	var count int64
+	err := db.Model(info).Where(query, args...).Count(&count).Error
+	if err != nil {
+		return true, err
+	}
+
+	if count > 0 {
+		return true, nil
+	}
+	err = m.DB().Create(info).Error
+	return false, err
+}
+
 func (m *Mysql) CreateWithCheckDuplicationByTableName(tableName string, info, query interface{}, args ...interface{}) (bool, error) {
 	var count int64
 	err := m.DB().Table(tableName).Where(query, args...).Count(&count).Error

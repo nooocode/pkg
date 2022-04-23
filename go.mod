@@ -10,7 +10,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/sirupsen/logrus v1.4.2
 	github.com/thinkgos/gomodbus/v2 v2.2.2
-	github.com/xuri/excelize/v2 v2.4.1
+	github.com/xuri/excelize/v2 v2.6.0
 	gopkg.in/sohlich/elogrus.v7 v7.0.0
 	gorm.io/driver/mysql v1.1.3
 	gorm.io/driver/postgres v1.2.1
