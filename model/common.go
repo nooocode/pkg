@@ -10,7 +10,7 @@ import (
 type Model struct {
 	ID        string         `json:"id" gorm:"primarykey;size:36" copier:"-"`
 	CreatedAt time.Time      `json:"createdAt" copier:"-"`
-	UpdatedAt time.Time      `json:"updatedAt" copier:"-"`
+	UpdatedAt time.Time      `json:"updatedAt" gorm:"index" copier:"-"`
 	DeletedAt gorm.DeletedAt `json:"deletedAt" gorm:"index" copier:"-"`
 }
 
