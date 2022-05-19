@@ -281,6 +281,6 @@ func (m *Mysql) UpdateWithCheckDuplication3(db *gorm.DB, info, query interface{}
 	if count > 0 {
 		return true, nil
 	}
-	err = db.Session(&gorm.Session{FullSaveAssociations: true}).Updates(info).Error
+	err = db.Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
 	return false, err
 }
