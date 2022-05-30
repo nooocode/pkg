@@ -207,59 +207,40 @@ func (m *Mysql) CreateWithCheckDuplicationByTableName(tableName string, info, qu
 	return false, err
 }
 
-func (m *Mysql) UpdateWithCheckDuplication(info, query interface{}, args ...interface{}) (bool, error) {
+func (m *Mysql) UpdateWithCheckDuplication(
+	db *gorm.DB,
+	info interface{},
+	fullSaveAssociations bool,
+	checkDuplicationQuery interface{},
+	checkDuplicationParams ...interface{}) (bool, error) {
+	return m.UpdateWithCheckDuplicationAndOmit(db, info, fullSaveAssociations, []string{}, checkDuplicationQuery, checkDuplicationParams...)
+}
+
+func (m *Mysql) UpdateWithCheckDuplicationAndOmit(
+	db *gorm.DB, info interface{},
+	fullSaveAssociations bool,
+	omit []string,
+	checkDuplicationQuery interface{},
+	checkDuplicationParams ...interface{}) (bool, error) {
 	var count int64
-	err := m.DB().Model(info).Where(query, args...).Count(&count).Error
+	err := db.Model(info).Where(checkDuplicationQuery, checkDuplicationParams...).Count(&count).Error
 	if err != nil {
 		return true, err
 	}
 	if count > 0 {
 		return true, nil
 	}
-	err = m.DB().Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
+	db = db.Omit(omit...)
+	if fullSaveAssociations {
+		err = db.Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
+	} else {
+		err = db.Updates(info).Error
+	}
+
 	return false, err
 }
 
-func (m *Mysql) UpdateWithCheckDuplication2(db *gorm.DB, info, query interface{}, args ...interface{}) (bool, error) {
-	var count int64
-	err := db.Model(info).Where(query, args...).Count(&count).Error
-	if err != nil {
-		return true, err
-	}
-	if count > 0 {
-		return true, nil
-	}
-	err = db.Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
-	return false, err
-}
-
-func (m *Mysql) UpdateWithCheckDuplicationAndOmit(info interface{}, omit []string, query interface{}, args ...interface{}) (bool, error) {
-	var count int64
-	err := m.DB().Model(info).Where(query, args...).Count(&count).Error
-	if err != nil {
-		return true, err
-	}
-	if count > 0 {
-		return true, nil
-	}
-	err = m.DB().Session(&gorm.Session{FullSaveAssociations: true}).Omit(omit...).Save(info).Error
-	return false, err
-}
-
-func (m *Mysql) UpdateWithCheckDuplicationAndOmit2(db *gorm.DB, info interface{}, omit []string, query interface{}, args ...interface{}) (bool, error) {
-	var count int64
-	err := db.Model(info).Where(query, args...).Count(&count).Error
-	if err != nil {
-		return true, err
-	}
-	if count > 0 {
-		return true, nil
-	}
-	err = db.Session(&gorm.Session{FullSaveAssociations: true}).Omit(omit...).Save(info).Error
-	return false, err
-}
-
-func (m *Mysql) UpdateWithCheckDuplicationByTableName(tableName string, info, query interface{}, args ...interface{}) (bool, error) {
+func (m *Mysql) UpdateWithCheckDuplicationByTableName(db *gorm.DB, tableName string, info, query interface{}, args ...interface{}) (bool, error) {
 	var count int64
 	err := m.DB().Table(tableName).Where(query, args...).Count(&count).Error
 	if err != nil {
@@ -269,18 +250,5 @@ func (m *Mysql) UpdateWithCheckDuplicationByTableName(tableName string, info, qu
 		return true, nil
 	}
 	err = m.DB().Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
-	return false, err
-}
-
-func (m *Mysql) UpdateWithCheckDuplication3(db *gorm.DB, info, query interface{}, args ...interface{}) (bool, error) {
-	var count int64
-	err := db.Model(info).Where(query, args...).Count(&count).Error
-	if err != nil {
-		return true, err
-	}
-	if count > 0 {
-		return true, nil
-	}
-	err = db.Session(&gorm.Session{FullSaveAssociations: true}).Save(info).Error
 	return false, err
 }
